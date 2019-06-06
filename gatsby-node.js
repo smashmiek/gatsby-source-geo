@@ -27,7 +27,7 @@ exports.sourceNodes = (
       children: [],
       internal: {
         parent: null,
-        type: `geoLayer`,
+        type: `geoLayer${configOptions.typeName}`,
 				content: nodeContent,
         contentDigest: createContentDigest(proxy_layer),
       },
@@ -55,7 +55,7 @@ exports.sourceNodes = (
       children: [],
       internal: {
         parent: null,
-        type: `geoFeature`,
+        type: `geoFeature${configOptions.typeName}`,
         content: nodeContent,
         contentDigest: createContentDigest(proxy_feature),
       },
@@ -71,10 +71,16 @@ exports.sourceNodes = (
   dataset.layers.forEach(function(layer) {
     const layerNode = processLayer(layer);
     createNode(layerNode);
+
+    let layerCount = 0;
+    
     layer.features.forEach(function(feature) {
+      layerCount++;
       const featureNode = processFeature(feature, layer);
       createNode(featureNode);
     });
+
+    console.log(`No of features in ${configOptions.name}: ${layerCount}`)
   });
 
   return;
